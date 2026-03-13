@@ -25,7 +25,7 @@ private:
     }
 
 public:
-        void log(std::string &event){
+        void log(const std::string &event) {
             logs.push_back({currentTimeStamp(),event});
         }
         void printAll() const {

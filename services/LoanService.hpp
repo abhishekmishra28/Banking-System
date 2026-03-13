@@ -24,20 +24,20 @@ public:
         : notify(notif),log(audi) {}
     void processLoan(const LoanApplication& app, Account& acc){
         double maxAllowed = maxLoanMultiplier * acc.getBalance();
-        bool approaved = (app.loanAmount <= maxAllowed);
+        bool approved = (app.loanAmount <= maxAllowed);
         std::cout << "\n--- Loan Application: " << app.applicationId << " ---\n";
         std::cout << "Applicant      : " << app.applicant.getName() << "\n";
         std::cout << "Requested      : $" << app.loanAmount << "\n";
         std::cout << "Max Eligible   : $" << maxAllowed << "\n";
         std::cout << "Decision       : " << (approved ? "APPROVED" : "DECLINED") << "\n";
 
-        if(approaved) {
+        if(approved) {
             acc.deposit(app.loanAmount);
             std::cout << "Loan Disbursed to account "<< acc.getAccountId()<<std::endl;
         }
-        notify.sendLoanDecision(acc,app.loanAmount,approaved,baseIntrest);
+        notify.sendLoanDecision(app.applicant,app.loanAmount,approved,baseIntrest);
         log.log("LOAN " + std::string(approved ? "APPROVED" : "DECLINED") +
                       " $" + std::to_string(app.loanAmount) +
                       " for " + app.applicant.getName());
     }
-}
+};

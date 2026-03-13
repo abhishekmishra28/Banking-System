@@ -14,16 +14,16 @@ class AccountService {
 private:
     AuditLogs& audit;
     int nextID = 100001;
-    std::vector<shared_ptr<Account>> accounts;
+    std::vector<std::shared_ptr<Account>> accounts;
 
-    std::string generate_ID(std::string& prefix){
-        return prefix + to_string(++nextID);
+    std::string generate_ID(const std::string& prefix){
+        return prefix + std::to_string(++nextID);
     }
 
 public:
     explicit AccountService(AuditLogs& log) : audit(log) {}
 
-    std::shared_ptr<savingAccount> openSavingAccount(const Customer& cust, double initialDeposit) {
+    std::shared_ptr<savingAccount> openSavingAccount(Customer& cust, double initialDeposit) {
         std::string id = generate_ID("SAV-");
         auto account = std::make_shared<savingAccount>(id,initialDeposit,cust);
         accounts.push_back(account);
@@ -31,7 +31,7 @@ public:
         std::cout<<"[Account Services] : Saving Account Opened : "<<account->toString()<<"\n";
         return account;
     }
-    shared_ptr<currentAccount> openCurrentAccount(const Customer& cust, double initialDeposit, const double overDraft = 1000.0){
+    std::shared_ptr<currentAccount> openCurrentAccount( Customer& cust, double initialDeposit, const double overDraft = 1000.0){
         std::string id = generate_ID("CUR-");
         auto account = std::make_shared<currentAccount>(id,initialDeposit,cust);
         accounts.push_back(account);
@@ -55,4 +55,4 @@ public:
         }
         std::cout<<"\n============End List================\n";
     }
-}
+};
