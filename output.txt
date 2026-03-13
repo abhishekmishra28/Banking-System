@@ -1,0 +1,95 @@
+============================================
+       C++ Banking System - Demo
+============================================
+
+Customers Created : 
+[Customer cust-0000001]Abhishek | abhishekltr2002@gmail.com | 9334905084
+[Customer cust-0000002]Rupesh | rupeshltr009@gmail.com | 8210010101
+
+===========Opening Accounts=========
+[Account Services] : Saving Account Opened : [SavingsAccount SAV-100002] Abhishek | Balance : Rs.5500.000000
+[Account Services] : Current Account Opened : [CurrentAccount ] Rupesh | Balance : Rs.3000.000000
+[Account Services] : Saving Account Opened : [SavingsAccount SAV-100004] Rupesh | Balance : Rs.8000.000000
+
+=========== Accounts List ============
+
+1. [SavingsAccount SAV-100002] Abhishek | Balance : Rs.5500.000000
+2. [CurrentAccount ] Rupesh | Balance : Rs.3000.000000
+3. [SavingsAccount SAV-100004] Rupesh | Balance : Rs.8000.000000
+
+============End List================
+
+=======Deposits=========
+
+[Savings] Deposited : Rs.500. | Current Balance : Rs.6000
+[Notification] Email to abhishekltr2002@gmail.com ---  DEPOSITof Rs.500 on account SAV-100002 | Current Baance : Rs.6000
+[Savings] Deposited : Rs.600. | Current Balance : Rs.8600
+[Notification] Email to rupeshltr009@gmail.com ---  DEPOSITof Rs.600 on account SAV-100004 | Current Baance : Rs.8600
+[Current] Deposited Rs. 500 | Current Balance : Rs.3500
+[Notification] Email to rupeshltr009@gmail.com ---  DEPOSITof Rs.500 on account  | Current Baance : Rs.3500
+
+========Withdrawal========
+
+[Savings] Withdrawn : Rs.500. | Current Balance : Rs.5500
+[Notification] Email to abhishekltr2002@gmail.com ---  WITHDRAWALof Rs.500 on account SAV-100002 | Current Baance : Rs.5500
+
+============Transfer============
+
+[Savings] Withdrawn : Rs.800. | Current Balance : Rs.4700
+[Savings] Deposited : Rs.800. | Current Balance : Rs.9400
+[Notification] Email to abhishekltr2002@gmail.com ---  TRANSFERof Rs.800 on account SAV-100002 | Current Baance : Rs.4700
+
+=============Apply Interest=============
+
+[Savings] Intrest Applied : Rs.164.5. | Current Balance : Rs.4864.5
+
+=============Fraud Detection==============
+
+[Savings] Deposited : Rs.12500. | Current Balance : Rs.21900
+[Fraud Alert] Large Transaction Detected : Rs.12500 on account SAV-100004
+[Notification] Email to rupeshltr009@gmail.com ---  DEPOSITof Rs.12500 on account SAV-100004 | Current Baance : Rs.21900
+[Notification : Fraud Alert] SMS to 8210010101 -- Suspecious Activity Detected on Your Account SAV-100004. Please Verify.
+
+===========Loan Processing==============
+
+
+--- Loan Application: LOAN-2024-001 ---
+Applicant      : Rupesh
+Requested      : $50000
+Max Eligible   : $109500
+Decision       : APPROVED
+[Savings] Deposited : Rs.50000. | Current Balance : Rs.71900
+Loan Disbursed to account SAV-100004
+[Loan Notification] Email to : rupeshltr009@gmail.com -- Loan of Rs.50000 has been approved at the rate of 7% intrest.
+
+--- Overdraft Test (CurrentAccount) ---
+[Caught]OverDraftLimit Exceed : Insufficient Funds.
+Final Account Balance :
+
+=========== Accounts List ============
+
+1. [SavingsAccount SAV-100002] Abhishek | Balance : Rs.4864.500000
+2. [CurrentAccount ] Rupesh | Balance : Rs.3500.000000
+3. [SavingsAccount SAV-100004] Rupesh | Balance : Rs.71900.000000
+
+============End List================
+
+================ Audit Logs ===========
+
+[Fri Mar 13 16:35:39 2026] | [Saving Account created with ID SAV-100002 for Abhishek]
+[Fri Mar 13 16:35:39 2026] | [Current Account created with ID CUR-100003 for Rupesh]
+[Fri Mar 13 16:35:39 2026] | [Saving Account created with ID SAV-100004 for Rupesh]
+[Fri Mar 13 16:35:39 2026] | [DEPOSIT : Rs.500.000000 to account SAV-100002
+]
+[Fri Mar 13 16:35:39 2026] | [DEPOSIT : Rs.600.000000 to account SAV-100004
+]
+[Fri Mar 13 16:35:39 2026] | [DEPOSIT : Rs.500.000000 to account
+]
+[Fri Mar 13 16:35:39 2026] | [WITHDRAWAL : Rs.500.000000 from account SAV-100002
+]
+[Fri Mar 13 16:35:39 2026] | [Transferred : Rs.800.000000 from account SAV-100002 to account SAV-100004
+]
+[Fri Mar 13 16:35:39 2026] | [DEPOSIT : Rs.12500.000000 to account SAV-100004
+]
+[Fri Mar 13 16:35:39 2026] | [LOAN APPROVED $50000.000000 for Rupesh]
+================ Logs End ===============
