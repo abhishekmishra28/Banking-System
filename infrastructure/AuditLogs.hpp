@@ -29,11 +29,11 @@ public:
             logs.push_back({currentTimeStamp(),event});
         }
         void printAll() const {
-            std::cout<<"\n================ Audit Logs ==========="<<std::endl;
+            std::cout<<"\n================ Audit Logs ===========\n"<<std::endl;
             for(const auto &entry : logs){
                 std::cout<<"["<<entry.timestamp<<"] | "<<"["<<entry.event<<"]"<<std::endl;
             }
-            std::cout<<"\n================ Logs End ===============\n";
+            std::cout<<"================ Logs End ===============\n";
         }
         auto count() const {
             return logs.size();

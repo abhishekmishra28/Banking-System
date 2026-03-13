@@ -33,7 +33,7 @@ public:
     }
 
     virtual std::string toString() const {
-        return "[ " + getAccountType() + " " + accountId + " ]" +
+        return "[" + getAccountType() + " " + accountId + "] " +
                 owner.getName() + " | Balance : Rs." + std::to_string(balance);
     }
 };

@@ -48,7 +48,7 @@ public:
     }    
 
     void listAll() const {
-        std::cout << "=========== Accounts List ============"<<std::endl;
+        std::cout << "\n=========== Accounts List ============\n"<<std::endl;
         int cnt = 0;
         for(const auto acc : accounts) {
             std::cout<< ++cnt <<". "<<acc->toString()<<std::endl;

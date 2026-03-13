@@ -7,7 +7,7 @@
 #include "../infrastructure/AuditLogs.hpp"
 
 struct LoanApplication {
-    std::string& applicationId;
+     const  std::string& applicationId;
     Customer& applicant;
     double loanAmount;
     int months;
