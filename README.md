@@ -31,28 +31,28 @@ A beginner-to-advanced guide covering every OOP pillar in C++ through a fully mo
 ┌─────────────────────────────────────────────────────────────────────┐
 │                        C++ Banking System                           │
 │                                                                     │
-│  ┌─────────────────────┐   ┌─────────────────────────────────────┐ │
-│  │       models/       │   │             services/               │ │
-│  │                     │   │                                     │ │
-│  │  Customer           │   │  AccountService                     │ │
-│  │  Account  (abstract)│   │  TransactionService                 │ │
-│  │  SavingsAccount     │   │  LoanService                        │ │
-│  │  CurrentAccount     │   │  NotificationService                │ │
-│  └─────────────────────┘   └─────────────────────────────────────┘ │
+│  ┌─────────────────────┐   ┌─────────────────────────────────────┐  │
+│  │       models/       │   │             services/               │  │
+│  │                     │   │                                     │  │
+│  │  Customer           │   │  AccountService                     │  │
+│  │  Account  (abstract)│   │  TransactionService                 │  │
+│  │  SavingsAccount     │   │  LoanService                        │  │
+│  │  CurrentAccount     │   │  NotificationService                │  │
+│  └─────────────────────┘   └─────────────────────────────────────┘  │
 │                                                                     │
-│  ┌─────────────────────┐   ┌─────────────────────────────────────┐ │
-│  │      security/      │   │          infrastructure/            │ │
-│  │                     │   │                                     │ │
-│  │  FraudDetection     │   │  AuditLogs                          │ │
-│  │  Service            │   │  PersistentAuditLogs  (Phase 4)     │ │
-│  └─────────────────────┘   └─────────────────────────────────────┘ │
+│  ┌─────────────────────┐   ┌─────────────────────────────────────┐  │
+│  │      security/      │   │          infrastructure/            │  │
+│  │                     │   │                                     │  │
+│  │  FraudDetection     │   │  AuditLogs                          │  │
+│  │  Service            │   │  PersistentAuditLogs  (Phase 4)     │  │
+│  └─────────────────────┘   └─────────────────────────────────────┘  │
 │                                                                     │
-│  ┌─────────────────────────────────────────────────────────────┐   │
-│  │                    database/  (Phase 4)                     │   │
-│  │                                                             │   │
-│  │   Database · CustomerRepo · AccountRepo                     │   │
-│  │   TransactionRepo · LoanRepo                                │   │
-│  └─────────────────────────────────────────────────────────────┘   │
+│  ┌─────────────────────────────────────────────────────────────┐    │
+│  │                    database/  (Phase 4)                     │    │
+│  │                                                             │    │
+│  │   Database · CustomerRepo · AccountRepo                     │    │
+│  │   TransactionRepo · LoanRepo                                │    │
+│  └─────────────────────────────────────────────────────────────┘    │
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
