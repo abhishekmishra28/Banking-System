@@ -1,0 +1,153 @@
+================================================
+  C++ Banking System 
+================================================
+
+
+--------------------------------------------------
+  1. Database Initialisation
+--------------------------------------------------
+[Database] Connected -> bank.db
+[Database] Schema ready.
+
+--------------------------------------------------
+  2. Create & Persist Customers
+--------------------------------------------------
+[Customer C001] Alice Johnson | alice@bank.com | +1-555-0101
+[Customer C002] Bob Smith | bob@bank.com | +1-555-0202
+
+--------------------------------------------------
+  3. Open & Persist Accounts
+--------------------------------------------------
+[AccountService] Opened: [SavingsAccount SAV-1001] Alice Johnson | Balance: $5000.000000
+[AccountService] Opened: [CurrentAccount CUR-1002] Alice Johnson | Balance: $2000.000000
+[AccountService] Opened: [SavingsAccount SAV-1003] Bob Smith | Balance: $3000.000000
+
+===== All Accounts =====
+[SavingsAccount SAV-1001] Alice Johnson | Balance: $5000.000000
+[CurrentAccount CUR-1002] Alice Johnson | Balance: $2000.000000
+[SavingsAccount SAV-1003] Bob Smith | Balance: $3000.000000
+========================
+
+--------------------------------------------------
+  4. Deposits
+--------------------------------------------------
+[Savings] Deposited $1200 | New balance: $6200
+[NOTIFICATION] Email to alice@bank.com - DEPOSIT of $1200 on account SAV-1001 | New balance: $6200
+[Savings] Deposited $800 | New balance: $3800
+[NOTIFICATION] Email to bob@bank.com - DEPOSIT of $800 on account SAV-1003 | New balance: $3800
+
+--------------------------------------------------
+  5. Withdrawal
+--------------------------------------------------
+[Savings] Withdrew $300 | New balance: $5900
+[NOTIFICATION] Email to alice@bank.com - WITHDRAWAL of $300 on account SAV-1001 | New balance: $5900
+
+--------------------------------------------------
+  6. Transfer Alice -> Bob
+--------------------------------------------------
+[Savings] Withdrew $500 | New balance: $5400
+[Savings] Deposited $500 | New balance: $4300
+[NOTIFICATION] Email to alice@bank.com - TRANSFER OUT of $500 on account SAV-1001 | New balance: $5400
+[NOTIFICATION] Email to bob@bank.com - TRANSFER IN of $500 on account SAV-1003 | New balance: $4300
+
+--------------------------------------------------
+  7. Apply Savings Interest
+--------------------------------------------------
+[Savings] Interest applied: $189 | New balance: $5589
+
+--------------------------------------------------
+  8. Large Deposit (Fraud Detection Test)
+--------------------------------------------------
+[Current] Deposited $15000 | New balance: $17000
+[FRAUD ALERT] Large transaction detected: $15000 on account CUR-1002
+[NOTIFICATION] Email to alice@bank.com - DEPOSIT of $15000 on account CUR-1002 | New balance: $17000
+[FRAUD NOTIFICATION] SMS to +1-555-0101 - Suspicious activity detected on account CUR-1002. Please verify.
+
+--------------------------------------------------
+  9. Loan Processing
+--------------------------------------------------
+
+--- Loan Application: LOAN-2024-001 ---
+Applicant      : Alice Johnson
+Requested      : $10000
+Max Eligible   : $27945
+Decision       : APPROVED
+[Savings] Deposited $10000 | New balance: $15589
+Loan disbursed to account SAV-1001
+[LOAN NOTIFICATION] Alice Johnson - Loan of $10000 APPROVED at 7% interest.
+
+--------------------------------------------------
+  10. Overdraft Test
+--------------------------------------------------
+[CAUGHT] Overdraft limit exceeded
+
+--------------------------------------------------
+  11. Reload All Data from Database
+--------------------------------------------------
+
+Customers in DB:
+  [Customer C001] Alice Johnson | alice@bank.com | +1-555-0101
+  [Customer C002] Bob Smith | bob@bank.com | +1-555-0202
+
+Accounts in DB:
+  [SavingsAccount SAV-1001] Alice Johnson | Balance: $15589.000000
+  [CurrentAccount CUR-1002] Alice Johnson | Balance: $17000.000000
+  [SavingsAccount SAV-1003] Bob Smith | Balance: $4300.000000
+
+--------------------------------------------------
+  12. Transaction Histories
+--------------------------------------------------
+
+===== Transaction History: SAV-1001 =====
+[2026-03-18 21:17:13] TRANSFER $500 -> SAV-1003
+[2026-03-18 21:17:13] WITHDRAWAL $300
+[2026-03-18 21:17:13] DEPOSIT $1200
+[2026-03-18 21:03:54] TRANSFER $500 -> SAV-1003
+[2026-03-18 21:03:54] WITHDRAWAL $300
+[2026-03-18 21:03:54] DEPOSIT $1200
+[2026-03-18 21:03:34] TRANSFER $500 -> SAV-1003
+[2026-03-18 21:03:34] WITHDRAWAL $300
+[2026-03-18 21:03:34] DEPOSIT $1200
+[2026-03-18 20:45:36] TRANSFER $500 -> SAV-1003
+[2026-03-18 20:45:36] WITHDRAWAL $300
+[2026-03-18 20:45:36] DEPOSIT $1200
+=============================================
+
+===== Transaction History: SAV-1003 =====
+[2026-03-18 21:17:13] DEPOSIT $800
+[2026-03-18 21:03:54] DEPOSIT $800
+[2026-03-18 21:03:34] DEPOSIT $800
+[2026-03-18 20:45:36] DEPOSIT $800
+=============================================
+
+Total flagged transactions: 4
+
+--------------------------------------------------
+  13. Loan History
+--------------------------------------------------
+
+===== Loan History: C001 =====
+ID: LOAN-2024-001 | $10000 / 36 months | APPROVED @ 7% | 2026-03-18 20:45:36
+==========================================
+
+--------------------------------------------------
+  14. Audit Logs
+--------------------------------------------------
+
+===== AUDIT LOG =====
+[Thu Mar 19 02:47:13 2026] OPENED SavingsAccount SAV-1001 for Alice Johnson
+[Thu Mar 19 02:47:13 2026] OPENED CurrentAccount CUR-1002 for Alice Johnson
+[Thu Mar 19 02:47:13 2026] OPENED SavingsAccount SAV-1003 for Bob Smith
+[Thu Mar 19 02:47:13 2026] DEPOSIT $1200.000000 to SAV-1001
+[Thu Mar 19 02:47:13 2026] DEPOSIT $800.000000 to SAV-1003
+[Thu Mar 19 02:47:13 2026] WITHDRAWAL $300.000000 from SAV-1001
+[Thu Mar 19 02:47:13 2026] TRANSFER $500.000000 from SAV-1001 to SAV-1003
+[Thu Mar 19 02:47:13 2026] DEPOSIT $15000.000000 to CUR-1002
+[Thu Mar 19 02:47:13 2026] LOAN APPROVED $10000.000000 for Alice Johnson
+=====================
+
+===== PERSISTENT AUDIT LOG (DB, last 50) =====
+====================================================
+[Database] Connection closed.
+
+ Done. Inspect with:  sqlite3 bank.db
