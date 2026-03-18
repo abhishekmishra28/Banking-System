@@ -188,6 +188,6 @@ int main() {
     // ── 18. Close database ────────────────────────────────────────
     Database::get().close();
 
-    std::cout << "\n✔  Done. Inspect with:  sqlite3 bank.db\n";
+    std::cout << "\n Done. Inspect with:  sqlite3 bank.db\n";
     return 0;
 }
