@@ -1,37 +1,35 @@
 #pragma once
-#include <iostream>
-#include <string>
 #include "Account.hpp"
-#include <stdexcept>
+#include <iostream>
 
-class currentAccount : public Account {
+class CurrentAccount : public Account {
 private:
-    double overDraftLimit;
+    double overdraftLimit;
+
 public:
-    currentAccount(
-        const std::string& id,
-        double initialBalance,
-        Customer& customer,
-        double overDraft = 1000.0
-    ) : Account(accountId,initialBalance,customer), overDraftLimit(overDraft) {}
+    CurrentAccount(const std::string& id,
+                   double initialBalance,
+                   const Customer& customer,
+                   double overdraft = 1000.0)
+        : Account(id, initialBalance, customer), overdraftLimit(overdraft) {}
 
-    // Account Type
-    std::string getAccountType() const {return "CurrentAccount";}
+    std::string getAccountType() const override { return "CurrentAccount"; }
 
-    // Deposit Method
     void deposit(double amount) override {
-        if(amount <=0 ) throw std::invalid_argument("Amount must be positive.");
+        if (amount <= 0) throw std::invalid_argument("Deposit must be positive");
         balance += amount;
-        std::cout<<"[Current] Deposited Rs. "<<amount<<" | Current Balance : Rs."<<balance<<std::endl;
+        std::cout << "[Current] Deposited $" << amount
+                  << " | New balance: $" << balance << "\n";
     }
 
-    // Withdraw Method
     void withdraw(double amount) override {
-        if(amount <=0 ) throw std::invalid_argument("Amount must be positive.");
-        if(amount > balance + overDraftLimit) throw std::runtime_error("OverDraftLimit Exceed : Insufficient Funds.");
-        balance-=amount;
-        std::cout<<"[Current] withdrew Rs. "<<amount<<" | Current Balance : Rs."<<balance<<std::endl;
+        if (amount <= 0) throw std::invalid_argument("Amount must be positive");
+        if (amount > balance + overdraftLimit)
+            throw std::runtime_error("Overdraft limit exceeded");
+        balance -= amount;
+        std::cout << "[Current] Withdrew $" << amount
+                  << " | New balance: $" << balance << "\n";
     }
 
-    double getOverDraftLimit() const {return overDraftLimit;}
+    double getOverdraftLimit() const { return overdraftLimit; }
 };

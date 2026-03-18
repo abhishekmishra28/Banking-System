@@ -1,242 +1,316 @@
-# Banking System (C++ OOP Project)
+# OOP Banking System in C++
 
-A modular **Banking System built in C++** to demonstrate real-world usage of **Object-Oriented Programming (OOP)** concepts such as encapsulation, inheritance, polymorphism, abstraction, and composition.
-
-This project is designed as a **learning-focused but production-style architecture**, where different responsibilities are separated into models, services, security modules, and infrastructure utilities. The goal is to show how a large application can be structured using OOP principles rather than writing everything inside a single file.
+A beginner-to-advanced guide covering every OOP pillar in C++ through a fully modular Banking System. Built with C++20, with an optional SQLite persistence layer added in Phase 4 — without changing a single line of existing code.
 
 ---
 
-# Overview
+## What This Project Covers
 
-This project simulates a simplified banking environment where customers can create accounts, perform transactions, apply for loans, and receive notifications. The system also includes fraud detection and audit logging.
-
-The architecture resembles how real backend systems are structured in financial software.
-
-Main capabilities of the system:
-
-* Create customers
-* Open savings or current accounts
-* Deposit and withdraw money
-* Transfer funds between accounts
-* Apply interest to savings accounts
-* Detect suspicious transactions
-* Send transaction and fraud notifications
-* Process loan applications
-* Maintain a full audit log of system events
+- **Phase 1** — OOP fundamentals: classes, encapsulation, inheritance, polymorphism, abstraction, and composition
+- **Phase 2** — System design: how to translate OOP concepts into a real modular architecture
+- **Phase 3** — Full implementation: a working banking system with accounts, transactions, fraud detection, loans, notifications, and audit logs
+- **Phase 4** — Database integration: a complete SQLite persistence layer added purely additively
 
 ---
 
-# Project Structure
+## Features
 
-The project follows a layered architecture where each folder has a specific responsibility.
+- Savings and Current account types with polymorphic behaviour
+- Deposit, withdrawal, and transfer operations
+- Fraud detection (large transactions, rapid activity)
+- Loan processing with credit scoring
+- Email/SMS notification system
+- Immutable audit trail
+- SQLite persistence via the Repository pattern
+
+---
+
+## System Architecture
 
 ```
-Banking-System
-│
-├── models
+┌─────────────────────────────────────────────────────────────────────┐
+│                        C++ Banking System                           │
+│                                                                     │
+│  ┌─────────────────────┐   ┌─────────────────────────────────────┐ │
+│  │       models/       │   │             services/               │ │
+│  │                     │   │                                     │ │
+│  │  Customer           │   │  AccountService                     │ │
+│  │  Account  (abstract)│   │  TransactionService                 │ │
+│  │  SavingsAccount     │   │  LoanService                        │ │
+│  │  CurrentAccount     │   │  NotificationService                │ │
+│  └─────────────────────┘   └─────────────────────────────────────┘ │
+│                                                                     │
+│  ┌─────────────────────┐   ┌─────────────────────────────────────┐ │
+│  │      security/      │   │          infrastructure/            │ │
+│  │                     │   │                                     │ │
+│  │  FraudDetection     │   │  AuditLogs                          │ │
+│  │  Service            │   │  PersistentAuditLogs  (Phase 4)     │ │
+│  └─────────────────────┘   └─────────────────────────────────────┘ │
+│                                                                     │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │                    database/  (Phase 4)                     │   │
+│  │                                                             │   │
+│  │   Database · CustomerRepo · AccountRepo                     │   │
+│  │   TransactionRepo · LoanRepo                                │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Project Structure
+
+```
+bank-system/
+├── models/
 │   ├── Customer.h
-│   ├── Account.h
+│   ├── Account.h              ← abstract base class
 │   ├── SavingsAccount.h
 │   └── CurrentAccount.h
-│
-├── services
+├── services/
 │   ├── AccountService.h
 │   ├── TransactionService.h
 │   ├── LoanService.h
 │   └── NotificationService.h
-│
-├── security
+├── security/
 │   └── FraudDetectionService.h
-│
-├── infrastructure
-│   └── AuditLogs.h
-│
-└── main.cpp
-```
-
-### Models
-
-These represent the core business entities.
-
-* **Customer** – stores customer details
-* **Account** – abstract base class for accounts
-* **SavingsAccount** – supports interest
-* **CurrentAccount** – supports overdraft
-
-### Services
-
-These classes contain the main business logic.
-
-* **AccountService** – manages account creation and lookup
-* **TransactionService** – handles deposits, withdrawals, and transfers
-* **LoanService** – processes loan applications
-* **NotificationService** – sends alerts to customers
-
-### Security
-
-Contains components responsible for system safety.
-
-* **FraudDetectionService** – monitors transactions and flags suspicious activity
-
-### Infrastructure
-
-Utility components used across the system.
-
-* **AuditLogs** – keeps an immutable record of all system events
-
----
-
-# OOP Concepts Demonstrated
-
-This project intentionally uses all major object-oriented programming principles.
-
-### Encapsulation
-
-Sensitive data such as account balance and customer information are kept private and accessed through controlled methods.
-
-### Inheritance
-
-SavingsAccount and CurrentAccount inherit common behaviour from the base Account class.
-
-### Polymorphism
-
-TransactionService works with references to the Account base class, allowing it to operate on any type of account.
-
-### Abstraction
-
-Account is defined as an abstract class with pure virtual methods such as deposit() and withdraw().
-
-### Composition
-
-Services such as TransactionService use other services (FraudDetectionService, NotificationService, AuditLogs) as internal components.
-
----
-
-# Features
-
-### Account Management
-
-The system supports two types of accounts:
-
-Savings Account
-
-* Earns interest
-* Does not allow overdraft
-
-Current Account
-
-* Allows overdraft up to a defined limit
-
-### Transactions
-
-Users can perform:
-
-* Deposits
-* Withdrawals
-* Transfers between accounts
-
-Every transaction is recorded and analysed for fraud detection.
-
-### Fraud Detection
-
-Transactions are analysed using simple rules such as:
-
-* Very large transactions
-* Rapid repeated transactions
-
-If suspicious activity is detected, the system generates alerts.
-
-### Notifications
-
-Customers receive notifications for:
-
-* Deposits
-* Withdrawals
-* Transfers
-* Fraud alerts
-* Loan decisions
-
-Currently notifications are printed to the console but can easily be replaced with email or SMS integrations.
-
-### Loan Processing
-
-LoanService evaluates loan applications based on account balance and defined eligibility rules.
-
-### Audit Logging
-
-Every important system event is recorded in an audit log with a timestamp.
-This simulates the audit trails required in real financial systems.
-
----
-
-# How to Compile and Run
-
-From the root project directory:
-
-```
-g++ -std=c++20 -Wall -Wextra -o bank_system main.cpp
-```
-
-Run the program:
-
-```
-./bank_system
-```
-
-On Windows:
-
-```
-bank_system.exe
+├── infrastructure/
+│   ├── AuditLogs.h
+│   └── PersistentAuditLogs.h  ← Phase 4
+├── database/                  ← Phase 4
+│   ├── Database.h
+│   ├── CustomerRepo.h
+│   ├── AccountRepo.h
+│   ├── TransactionRepo.h
+│   └── LoanRepo.h
+├── main.cpp                   ← Phase 3 entry point
+└── main_db.cpp                ← Phase 4 entry point
 ```
 
 ---
 
-# Example Flow
+## OOP Concept Map
 
-When the program runs, it demonstrates the following workflow:
+```
+                     ┌──────────────────────────────┐
+                     │         <<abstract>>         │
+                     │           Account            │
+                     │                              │
+                     │  # accountId : string        │
+                     │  # balance   : double        │
+                     │  # owner     : Customer      │
+                     │                              │
+                     │  + deposit()   = 0           │
+                     │  + withdraw()  = 0           │
+                     │  + getType()   = 0           │
+                     │  + transfer()  ← concrete    │
+                     └───────────────┬──────────────┘
+                                     │
+                      ───────────────────────────────
+                      │                             │
+          ┌───────────▼────────────┐   ┌────────────▼──────────────┐
+          │     SavingsAccount     │   │      CurrentAccount       │
+          │                        │   │                           │
+          │  - interestRate        │   │  - overdraftLimit         │
+          │  + applyInterest()     │   │  allows negative balance  │
+          └────────────────────────┘   └───────────────────────────┘
 
-1. Customers are created
-2. Accounts are opened
-3. Deposits and withdrawals are performed
-4. Funds are transferred between accounts
-5. Interest is applied to savings accounts
-6. Fraud detection is triggered on a large transaction
-7. A loan application is processed
-8. Final balances are displayed
-9. Audit logs are printed
+
+   ┌──────────────┐
+   │   Customer   │ ◄──── composed into ──── Account   (has-a)
+   │              │
+   │  - id        │
+   │  - name      │
+   │  - email     │
+   │  - phone     │
+   └──────────────┘
+
+
+   ┌───────────────────────┐
+   │   TransactionService  │ ──► FraudDetectionService
+   │   (pipeline coord.)   │ ──► NotificationService
+   │                       │ ──► AuditLogs
+   └───────────────────────┘
+             │
+             │  accepts Account& — runtime polymorphic dispatch
+             ▼
+      deposit() / withdraw() / transfer()
+      correct method called based on actual subtype
+
+
+   ┌─────────────────────┐
+   │      AuditLogs      │                    Phase 3
+   │  + log(event)       │
+   │  + printAll()       │
+   └──────────┬──────────┘
+              │  inherits
+   ┌──────────▼──────────┐
+   │  PersistentAuditLogs│                    Phase 4
+   │  + log()  → DB + ↑  │  passes silently as AuditLogs& anywhere
+   │  + printFromDb()    │  Liskov Substitution Principle
+   └─────────────────────┘
+```
 
 ---
 
-# Why This Project Was Built
+## Transaction Pipeline
 
-This project was created to practice and demonstrate:
-
-* Writing clean and modular C++ code
-* Applying object-oriented design to a real-world problem
-* Structuring medium-sized projects logically
-* Designing service-oriented architecture in C++
-
-Instead of focusing only on algorithms, the aim is to understand **how real software systems are designed and organised**.
-
----
-
-# Possible Improvements
-
-Future improvements could include:
-
-* Database integration (SQLite/PostgreSQL)
-* REST API layer
-* ATM interface simulation
-* Multi-threaded transaction handling
-* Authentication and authorization
-* Unit testing with Google Test
-* Logging frameworks
-* Integration with real notification services
+```
+  txnService.deposit(account, amount)
+       │
+       ├─► account.deposit(amount)          ← polymorphic dispatch
+       │
+       ├─► fraudService.analyse(txn)        ← heuristic rules
+       │        │
+       │        ├── amount >= $10,000  → flag
+       │        ├── > 5 txns / 60 sec  → flag
+       │        └── midnight – 4 am    → flag
+       │
+       ├─► notifService.sendAlert(...)      ← email notification
+       │       └── if flagged → sendFraudAlert()   ← SMS alert
+       │
+       └─► auditLogs.log(...)              ← immutable record
+```
 
 ---
 
-# Author
+## Database Schema
 
-Abhishek Kumar Mishra
+```
+┌───────────────────────────────────────────┐
+│                 customers                 │
+│ ───────────────────────────────────────   │
+│  customer_id   TEXT   PRIMARY KEY         │
+│  name          TEXT   NOT NULL            │
+│  email         TEXT   NOT NULL  UNIQUE    │
+│  phone         TEXT   NOT NULL            │
+└────────────────────┬──────────────────────┘
+                     │ 1
+                     │
+                     │ N
+┌──────────────────────────────────────────┐
+│                  accounts                │
+│ ───────────────────────────────────────  │
+│  account_id      TEXT   PRIMARY KEY      │
+│  account_type    TEXT   NOT NULL         │
+│    'SavingsAccount' | 'CurrentAccount'   │
+│  balance         REAL   NOT NULL         │
+│  customer_id     TEXT   FK → customers   │
+│  interest_rate   REAL   NULL for Current │
+│  overdraft_limit REAL   NULL for Savings │
+└──────┬──────────────────────┬────────────┘
+       │ 1                    │ 1
+       │                      │
+       │ N                    │ N
+┌──────▼──────────────┐  ┌───▼───────────────────────┐
+│     transactions    │  │          loans            │
+│  ─────────────────  │  │  ─────────────────────────│
+│  id       INT  PK   │  │  application_id TEXT  PK  │
+│  account_id    FK   │  │  customer_id         FK   │
+│  type      TEXT     │  │  amount         REAL      │
+│    DEPOSIT          │  │  term_months    INT       │
+│    WITHDRAWAL       │  │  approved       INT  0/1  │
+│    TRANSFER         │  │  interest_rate  REAL      │
+│  amount    REAL     │  │  created_at     TEXT      │
+│  target_account     │  └───────────────────────────┘
+│  flagged   INT 0/1  │
+│  created_at TEXT    │  ┌────────────────────────────┐
+└─────────────────────┘  │         audit_log          │
+                         │  ───────────────────────── │
+                         │  id        INT   PK        │
+                         │  event     TEXT  NOT NULL  │
+                         │  created_at TEXT           │
+                         └────────────────────────────┘
+```
 
-This project was built as part of learning **Object-Oriented Programming in C++ and system design through practical implementation**.
+---
+
+## Phase 4 — Zero Changes Rule
+
+```
+Phase 3 files                    Phase 4 additions
+────────────────────────         ─────────────────────────────────
+models/        ← untouched       database/Database.h
+services/      ← untouched       database/CustomerRepo.h
+security/      ← untouched       database/AccountRepo.h
+infrastructure/AuditLogs.h       database/TransactionRepo.h
+               ← untouched       database/LoanRepo.h
+main.cpp       ← untouched       infrastructure/PersistentAuditLogs.h
+                                 main_db.cpp   ← new entry point
+```
+
+Adding persistence to an existing codebase means wrapping the domain — not rewriting it. This demonstrates the **Open/Closed Principle**: open for extension, closed for modification.
+
+---
+
+## OOP Concepts Used
+
+| Concept | Where |
+|---|---|
+| Encapsulation | `Account`, `Customer` — all attributes private, mutated through validated methods |
+| Inheritance | `SavingsAccount` and `CurrentAccount` extend `Account`; `PersistentAuditLogs` extends `AuditLogs` |
+| Polymorphism | `TransactionService` accepts `Account&` — correct `deposit()`/`withdraw()` called at runtime |
+| Abstraction | `Account` is abstract — no bare account can be created; subtypes must fulfil the contract |
+| Composition | `Account` has-a `Customer`; `TransactionService` has-a fraud, notification, and audit dependencies |
+
+---
+
+## Getting Started
+
+### Requirements
+
+- A C++20 compiler (`g++` or `clang++`)
+- SQLite3 (Phase 4 only)
+
+**Install SQLite3:**
+
+```bash
+# Ubuntu / Debian
+sudo apt-get install -y libsqlite3-dev
+
+# macOS
+brew install sqlite3
+```
+
+### Build & Run
+
+**Phase 3 (no database):**
+```bash
+g++ -std=c++20 -Wall -Wextra -o bank main.cpp
+./bank
+```
+
+**Phase 4 (with SQLite):**
+```bash
+g++ -std=c++20 -Wall -Wextra -o bank_db main_db.cpp -lsqlite3
+./bank_db
+```
+
+### Inspect the Database
+
+```bash
+sqlite3 bank.db
+```
+
+```sql
+-- Current balances
+SELECT account_id, account_type, balance FROM accounts;
+
+-- Full transaction log, newest first
+SELECT account_id, type, amount, flagged, created_at
+FROM transactions ORDER BY id DESC;
+
+-- Flagged transactions only
+SELECT * FROM transactions WHERE flagged = 1;
+
+-- Audit trail
+SELECT event, created_at FROM audit_log ORDER BY id DESC LIMIT 20;
+
+.quit
+```
+
+---
+
+## License
+
+MIT

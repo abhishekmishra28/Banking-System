@@ -1,45 +1,65 @@
 #pragma once
 #include <string>
-#include <iostream>
+#include <vector>
 #include <chrono>
-#include "NotificationService.hpp"
-#include "../infrastructure/AuditLogs.hpp"
 #include "../models/Account.hpp"
 #include "../security/FraudDetectionService.hpp"
+#include "NotificationService.hpp"
+#include "../infrastructure/AuditLogs.hpp"
 
 class TransactionService {
 private:
-    AuditLogs& auditLogs;
-    NotificationService& notifService;
     FraudDetectionService& fraudService;
+    NotificationService&   notifService;
+    AuditLogs&             auditLogs;
+
 public:
-    TransactionService (FraudDetectionService& fraud,
-                        NotificationService& notif,
-                        AuditLogs& audit) : fraudService(fraud), notifService(notif), auditLogs(audit) {}
+    TransactionService(FraudDetectionService& fraud,
+                       NotificationService& notif,
+                       AuditLogs& audit)
+        : fraudService(fraud), notifService(notif), auditLogs(audit) {}
 
-    void deposit(Account& account, double amt){
-        account.deposit(amt);  
-        TransactionRecord txn{account.getAccountId(),amt,"DEPOSIT",std::chrono::system_clock::now()};
-        bool flag = fraudService.analyze(txn);
-        notifService.sendTransactionAlert(account,"DEPOSIT",amt);
-        if(flag) notifService.sendFraudAlert(account);
-        auditLogs.log("DEPOSIT : Rs."+ std::to_string(amt)+" to "+"account "+account.getAccountId()+"\n");
+    void deposit(Account& account, double amount) {
+        account.deposit(amount);
+
+        TransactionRecord txn{ account.getAccountId(), amount, "DEPOSIT",
+                               std::chrono::system_clock::now() };
+        bool flagged = fraudService.analyse(txn);
+
+        notifService.sendTransactionAlert(account, "DEPOSIT", amount);
+        if (flagged) notifService.sendFraudAlert(account);
+
+        auditLogs.log("DEPOSIT $" + std::to_string(amount) +
+                      " to " + account.getAccountId());
     }
 
-    void withdraw(Account& account,double amt){
-        account.withdraw(amt);
-        TransactionRecord txn{account.getAccountId(),amt,"WITHDRAWAL",std::chrono::system_clock::now()};
-        bool flag = fraudService.analyze(txn);
-        notifService.sendTransactionAlert(account,"WITHDRAWAL",amt);
-        if(flag) notifService.sendFraudAlert(account);
-        auditLogs.log("WITHDRAWAL : Rs."+ std::to_string(amt)+" from account "+account.getAccountId()+"\n");
+    void withdraw(Account& account, double amount) {
+        account.withdraw(amount);
+
+        TransactionRecord txn{ account.getAccountId(), amount, "WITHDRAWAL",
+                               std::chrono::system_clock::now() };
+        bool flagged = fraudService.analyse(txn);
+
+        notifService.sendTransactionAlert(account, "WITHDRAWAL", amount);
+        if (flagged) notifService.sendFraudAlert(account);
+
+        auditLogs.log("WITHDRAWAL $" + std::to_string(amount) +
+                      " from " + account.getAccountId());
     }
-    void transfer(Account& source, Account& target, double amt){
-        source.transfer(amt,target);
-        TransactionRecord txn {source.getAccountId(),amt, "TRANSFER",std::chrono::system_clock::now()};
-        bool flag = fraudService.analyze(txn);
-        notifService.sendTransactionAlert(source,"TRANSFER",amt);
-        if(flag) notifService.sendFraudAlert(source);
-        auditLogs.log("Transferred : Rs."+ std::to_string(amt)+" from account "+source.getAccountId() + " to account " + target.getAccountId()+"\n");
+
+    void transfer(Account& source, Account& target, double amount) {
+        source.transfer(amount, target);
+
+        TransactionRecord txn{ source.getAccountId(), amount, "TRANSFER",
+                               std::chrono::system_clock::now() };
+        bool flagged = fraudService.analyse(txn);
+
+        notifService.sendTransactionAlert(source, "TRANSFER OUT", amount);
+        notifService.sendTransactionAlert(target, "TRANSFER IN",  amount);
+        if (flagged) notifService.sendFraudAlert(source);
+
+        auditLogs.log("TRANSFER $" + std::to_string(amount) +
+                      " from " + source.getAccountId() +
+                      " to "   + target.getAccountId());
     }
 };

@@ -1,41 +1,39 @@
 #pragma once
 #include <string>
+#include <vector>
 #include <iostream>
 #include <chrono>
 #include <ctime>
-#include <vector>
 #include <sstream>
 
-class AuditLogs{
+class AuditLogs {
 private:
     struct LogEntry {
         std::string timestamp;
         std::string event;
     };
+
     std::vector<LogEntry> logs;
 
-    static std::string currentTimeStamp() {
-        auto now = std::chrono::system_clock::now();
+    static std::string currentTimestamp() {
+        auto now  = std::chrono::system_clock::now();
         std::time_t t = std::chrono::system_clock::to_time_t(now);
         std::string ts = std::ctime(&t);
-        if(!ts.empty() && ts.back()=='\n') {
-            ts.pop_back();
-        }
+        if (!ts.empty() && ts.back() == '\n') ts.pop_back();
         return ts;
     }
 
 public:
-        void log(const std::string &event) {
-            logs.push_back({currentTimeStamp(),event});
-        }
-        void printAll() const {
-            std::cout<<"\n================ Audit Logs ===========\n"<<std::endl;
-            for(const auto &entry : logs){
-                std::cout<<"["<<entry.timestamp<<"] | "<<"["<<entry.event<<"]"<<std::endl;
-            }
-            std::cout<<"================ Logs End ===============\n";
-        }
-        auto count() const {
-            return logs.size();
-        }
+    void log(const std::string& event) {
+        logs.push_back({ currentTimestamp(), event });
+    }
+
+    void printAll() const {
+        std::cout << "\n===== AUDIT LOG =====\n";
+        for (const auto& entry : logs)
+            std::cout << "[" << entry.timestamp << "] " << entry.event << "\n";
+        std::cout << "=====================\n";
+    }
+
+    size_t count() const { return logs.size(); }
 };

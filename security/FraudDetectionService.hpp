@@ -1,47 +1,53 @@
 #pragma once
 #include <string>
 #include <iostream>
-#include <chrono>
 #include <vector>
+#include <chrono>
 
 struct TransactionRecord {
     std::string accountId;
-    double amount;
-    std::string type; // Deposit / Writhdraw / Transfer
+    double      amount;
+    std::string type;       // "DEPOSIT" | "WITHDRAWAL" | "TRANSFER"
     std::chrono::system_clock::time_point timestamp;
 };
 
 class FraudDetectionService {
 private:
-    double  SingleTransLimit   =   10000.0;
-    int     FrequencyLimit     =   5;
-    int     TransactionWinSec  =   60;
+    double singleTransactionThreshold = 10000.0;
+    int    rapidTransactionLimit      = 5;
+    int    rapidTransactionWindowSecs = 60;
 
     std::vector<TransactionRecord> history;
 
-    bool isRapidTransaction(const std::string &accountId) const {
+    bool isRapidTransaction(const std::string& accountId) const {
         auto now = std::chrono::system_clock::now();
         int recentCount = 0;
-        for(const auto& rec : history) {
-            if(rec.accountId == accountId) {
-                auto diffSecs = std::chrono::duration_cast<std::chrono::seconds>(now - rec.timestamp).count();
-                if(diffSecs <= TransactionWinSec) recentCount++;
+        for (const auto& rec : history) {
+            if (rec.accountId == accountId) {
+                auto diffSecs = std::chrono::duration_cast<std::chrono::seconds>(
+                    now - rec.timestamp).count();
+                if (diffSecs <= rapidTransactionWindowSecs) ++recentCount;
             }
         }
-        return recentCount >= FrequencyLimit;
+        return recentCount >= rapidTransactionLimit;
     }
 
 public:
-    bool analyze(const TransactionRecord& txn){
+    bool analyse(const TransactionRecord& txn) {
         bool flagged = false;
-        if(txn.amount >= SingleTransLimit){
-            std::cout<<"[Fraud Alert] Large Transaction Detected : Rs."<< txn.amount << " on account " <<txn.accountId<<std::endl;
+
+        if (txn.amount >= singleTransactionThreshold) {
+            std::cout << "[FRAUD ALERT] Large transaction detected: $"
+                      << txn.amount << " on account " << txn.accountId << "\n";
             flagged = true;
         }
-        if(isRapidTransaction(txn.accountId)) {
-            std::cout<<"[Fraud Alert] Large Transaction Detected on account " << txn.accountId<<std::endl;
+
+        if (isRapidTransaction(txn.accountId)) {
+            std::cout << "[FRAUD ALERT] Rapid transactions detected on account "
+                      << txn.accountId << "\n";
             flagged = true;
         }
+
         history.push_back(txn);
         return flagged;
     }
