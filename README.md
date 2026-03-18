@@ -1,27 +1,33 @@
-# OOP Banking System in C++
+# 🏦 C++ Banking System with SQLite Integration
 
-A beginner-to-advanced guide covering every OOP pillar in C++ through a fully modular Banking System. Built with C++20, with an optional SQLite persistence layer added in Phase 4 — without changing a single line of existing code.
-
----
-
-## What This Project Covers
-
-- **Phase 1** — OOP fundamentals: classes, encapsulation, inheritance, polymorphism, abstraction, and composition
-- **Phase 2** — System design: how to translate OOP concepts into a real modular architecture
-- **Phase 3** — Full implementation: a working banking system with accounts, transactions, fraud detection, loans, notifications, and audit logs
-- **Phase 4** — Database integration: a complete SQLite persistence layer added purely additively
+A modular, real-world **Banking System** built in **C++ (OOP)** with **SQLite database integration**, demonstrating clean architecture, separation of concerns, and industry-level design patterns.
 
 ---
 
-## Features
+## 🚀 Overview
 
-- Savings and Current account types with polymorphic behaviour
+This project simulates a real banking backend system with features like:
+
+- Account management (Savings & Current)
 - Deposit, withdrawal, and transfer operations
-- Fraud detection (large transactions, rapid activity)
-- Loan processing with credit scoring
-- Email/SMS notification system
-- Immutable audit trail
-- SQLite persistence via the Repository pattern
+- Fraud detection system
+- Loan processing module
+- Notification system
+- Audit logging
+- SQLite-based persistent storage
+
+It is designed using **Object-Oriented Programming (OOP)** principles and follows a **layered architecture** similar to real-world financial systems.
+
+---
+
+## 🧠 Key Concepts Demonstrated
+
+- **Encapsulation** → Controlled access to account data  
+- **Inheritance** → `SavingsAccount`, `CurrentAccount` from base `Account`  
+- **Polymorphism** → Unified handling of different account types  
+- **Abstraction** → Abstract base classes for extensibility  
+- **Composition** → Services interacting with models  
+- **Separation of Concerns** → Models, Services, Security, Infrastructure  
 
 ---
 
