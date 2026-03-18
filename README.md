@@ -317,6 +317,10 @@ SELECT event, created_at FROM audit_log ORDER BY id DESC LIMIT 20;
 
 ---
 
+
+👨‍💻 Author
+-Abhishek Kumar Mishra
+
 ## License
 
 MIT

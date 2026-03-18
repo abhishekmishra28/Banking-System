@@ -1,0 +1,29 @@
+# Executables
+*.exe
+*.out
+*.app
+
+# Object files
+*.o
+*.obj
+
+# Build files
+build/
+bin/
+
+# SQLite database
+*.db
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+
+# IDE files
+.vscode/
+.idea/
+
+# Windows system files
+Thumbs.db
+.DS_Store
