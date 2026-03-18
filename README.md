@@ -83,8 +83,8 @@ bank-system/
 │   ├── AccountRepo.h
 │   ├── TransactionRepo.h
 │   └── LoanRepo.h
-├── main.cpp                   ← Phase 3 entry point
-└── main_db.cpp                ← Phase 4 entry point
+├── test.cpp                   ← Phase 3 entry point
+└── main.cpp                   ← Phase 4 entry point
 ```
 
 ---
@@ -235,8 +235,8 @@ services/      ← untouched       database/CustomerRepo.h
 security/      ← untouched       database/AccountRepo.h
 infrastructure/AuditLogs.h       database/TransactionRepo.h
                ← untouched       database/LoanRepo.h
-main.cpp       ← untouched       infrastructure/PersistentAuditLogs.h
-                                 main_db.cpp   ← new entry point
+test.cpp       ← untouched       infrastructure/PersistentAuditLogs.h
+                                 main.cpp   ← new entry point
 ```
 
 Adding persistence to an existing codebase means wrapping the domain — not rewriting it. This demonstrates the **Open/Closed Principle**: open for extension, closed for modification.
@@ -276,13 +276,13 @@ brew install sqlite3
 
 **Phase 3 (no database):**
 ```bash
-g++ -std=c++20 -Wall -Wextra -o bank main.cpp
+g++ -std=c++20 -Wall -Wextra -o bank test.cpp
 ./bank
 ```
 
 **Phase 4 (with SQLite):**
 ```bash
-g++ -std=c++20 -Wall -Wextra -o bank_db main_db.cpp -lsqlite3
+g++ -std=c++20 -Wall -Wextra -o bank_db main.cpp -lsqlite3
 ./bank_db
 ```
 
